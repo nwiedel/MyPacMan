@@ -12,6 +12,8 @@ public class MovementScript : MonoBehaviour
 
     private Vector2 direction;
 
+    public Animator pacmanAnimator;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -52,5 +54,21 @@ public class MovementScript : MonoBehaviour
         Vector2 myPosition = Vector2.MoveTowards(transform.position, direction, speed);
         // Anweisung, das sich Pacman bewegen soll
         rb2d.MovePosition(myPosition);
+
+        // Aufruf, um die Animation zu aktualisieren
+        Animate();
+    }
+
+    /// <summary>
+    /// Berechnet aus der Richtung, ind Pacman sich bewergt,
+    /// die Animation, die abgespielt werden soll
+    /// </summary>
+    private void Animate()
+    {
+        // Richtung von Pacman berechnen
+        Vector2 dir = direction - (Vector2)transform.position;
+        // Parameter im Animator festlegen
+        pacmanAnimator.SetFloat("moveX", dir.x);
+        pacmanAnimator.SetFloat("moveY", dir.y);
     }
 }
