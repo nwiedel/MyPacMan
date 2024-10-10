@@ -22,6 +22,11 @@ public class MonsterMovement : MonoBehaviour
     public float speed;
 
     /// <summary>
+    /// Länge des Linecastvektors zur Bestimmung der Kollision
+    /// </summary>
+    public float lineDistance = 0.5f;
+
+    /// <summary>
     /// Zeiger auf die Animator Komponente
     /// </summary>
     private Animator animator;
@@ -36,6 +41,13 @@ public class MonsterMovement : MonoBehaviour
     /// </summary>
     private enum CurrentDirection { left, right, up, down};
     private CurrentDirection dir;
+    private CurrentDirection[] directions =
+    {
+        CurrentDirection.left,
+        CurrentDirection.right,
+        CurrentDirection.up,
+        CurrentDirection.down
+    };
 
     // Start is called before the first frame update
     void Start()
@@ -73,6 +85,7 @@ public class MonsterMovement : MonoBehaviour
         else
         {
             // Kollision mit dem Maze => neue Richtung festlegen
+            SetNewDirection();
         }
     }
 
@@ -159,12 +172,33 @@ public class MonsterMovement : MonoBehaviour
         destination = (Vector2)transform.position + nextDirection;
     }
 
+    /// <summary>
+    /// Setzt die neue Richtung nach Kollision mit Maze
+    /// </summary>
     private void SetNewDirection()
     {
         // Neue Richtung festlegen
-        // zufällige Richtung zuweisen
+        CurrentDirection newDirection = GetRandomDirection();
         // Sicherstellen, dass es nicht die bestehende Richtung ist
+        while(newDirection == dir)
+        {
+            // Ist es die bestehende Richtung => neue Richtung wählen
+            newDirection = GetRandomDirection();
+        }
+
         // Variable zuweisen
+        dir = newDirection;
+
         // Richtungsvektor zuweisen
+        DetermineDirection();
+    }
+
+    /// <summary>
+    /// Bestimmung der neuen Richtung
+    /// </summary>
+    /// <returns>zufällige neue Richtung</returns>
+    private CurrentDirection GetRandomDirection()
+    {
+        return directions[Random.Range(0, directions.Length)];
     }
 }
