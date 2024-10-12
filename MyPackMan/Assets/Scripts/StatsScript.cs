@@ -15,6 +15,11 @@ public class StatsScript : MonoBehaviour
     /// </summary>
     public Text scoreText;
 
+    /// <summary>
+    /// wird abgespielt, wenn man Pacman einen Punkt frisst
+    /// </summary>
+    public AudioSource pointsAudioSource;
+
     // Methode um den Punktestand z ändern
     public void ChangeScore(int newPoints)
     {
@@ -22,5 +27,12 @@ public class StatsScript : MonoBehaviour
         score += newPoints;
         // Textfeld aktualisieren
         scoreText.text = score.ToString();
+        // Wird die Audioqueele abgespielt?
+        if(!pointsAudioSource.isPlaying)
+        {
+            // Audio abspielen
+            pointsAudioSource.Play();
+        }
+        
     }
 }
